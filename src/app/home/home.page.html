@@ -1,20 +1,55 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Blank
+      Videos
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
+  <!-- Default Segment -->
+  <ion-segment [(ngModel)]="homeSegment">
+    <ion-segment-button value="videos">
+      <ion-label>Videos</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="logs">
+      <ion-label>Logs</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <div [ngSwitch]="homeSegment">
+    <div *ngSwitchCase="'videos'">
+      <ion-list id="list" *ngFor="let data of videosData ">
+        <ion-item-group>
+          <ion-item-divider color="secondary">
+            <ion-label> {{data['name']}}</ion-label>
+          </ion-item-divider>
+          <br>
+          <ion-item>
+            <video class="vp" controls [src]="data['url']"> </video>
+          </ion-item>
+        </ion-item-group>
+      </ion-list>
+    </div>
+
+    <div *ngSwitchCase="'logs'">
+      <ion-list *ngFor="let log of ListOfLogs | async">
+        <pre>{{ log.incedentDateAndtime }}</pre>
+      </ion-list>
+    </div>
   </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
 </ion-content>

@@ -5,5 +5,35 @@
 </ion-header>
 
 <ion-content>
-  <h1>Login page</h1>
+
+  <div class="login-logo">
+    <img src="assets/images/login-background.jpg">
+  </div>
+
+  <div class="form">
+    <ion-item no-lines id="input-field">
+      <ion-label>Email: </ion-label>
+      <ion-input [(ngModel)]="email"></ion-input>
+    </ion-item>
+
+    <ion-item no-lines id="input-field">
+      <ion-label>Password: </ion-label>
+      <ion-input type="password" pattern="[0-9]*" inputmode="numeric" [(ngModel)]="password"></ion-input>
+    </ion-item>
+
+    <ion-item no-lines>
+      <button ion-button clear color="danger" (click)="resetPassword()" item-end><strong>Forgot
+          Password?</strong></button>
+    </ion-item>
+  </div>
+  
+  <div class="login-action">
+      <ion-button expand="full" shape="round" (click)="login()">Sign in</ion-button>
+  </div>
+
+
+  <!-- <li *ngFor="let item of items | async">
+    <pre>{{ item.incedentDateAndtime }}</pre>
+  </li> -->
+
 </ion-content>

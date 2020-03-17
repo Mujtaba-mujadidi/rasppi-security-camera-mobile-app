@@ -1,5 +1,7 @@
 {
   "name": "rappi-security-camera-app",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "angular"
 }
