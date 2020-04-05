@@ -15,12 +15,13 @@ import * as firebase from 'firebase/app';
 })
 export class FirebaseProviderService {
 
-  firebaseAuthor: any
+  private currentUser
+
+  private email
+  private password
 
 
   constructor(public firebaseDatabase: AngularFireDatabase, public fireAuthor: AngularFireAuth, public storage: AngularFireStorage) {
-
-
   }
 
 
@@ -49,6 +50,9 @@ export class FirebaseProviderService {
   public login(email, password): Promise<any> {
     return new Promise((resolve, reject) => {
       this.fireAuthor.auth.signInWithEmailAndPassword(email, password).then((user) => {
+        this.email = email
+        this.password = password
+        this.currentUser = this.fireAuthor.auth.currentUser
         resolve()
       }).catch(err => reject(err))
     })
@@ -58,11 +62,56 @@ export class FirebaseProviderService {
    * 
    */
   public logout(): Promise<any> {
-    return this.fireAuthor.auth.signOut()
+    return new Promise((resolve, reject) => {
+      this.fireAuthor.auth.signOut().then(() => {
+        this.currentUser = null
+        resolve();
+      }).catch(err => {
+        reject(err)
+      })
+    })
   }
 
   public resetPassword(email): Promise<any> {
     return this.fireAuthor.auth.sendPasswordResetEmail(email)
+  }
+
+  public updatePassword(email, password, newPassword):Promise<any> {
+    return new Promise((resolve, reject) => {
+
+      this.reauthenticateUser(email, password).then(()=>{
+        this.fireAuthor.auth.currentUser.updatePassword(newPassword).then(()=>{
+          resolve("Password updated successfully")
+        }).catch(err=>reject(err))
+      }).catch(err=>reject(err))
+    })
+  }
+
+  public updateEmail(email, password, newEmail): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.reauthenticateUser(email, password).then(() => {
+        this.fireAuthor.auth.currentUser.updateEmail(newEmail).then(() => {
+          resolve("Email updated successfully")
+        }).catch(err=>reject(err))
+      }).catch(err=>reject(err))
+    })
+  }
+
+  public updateEmailAndPassword(email, password, newEmail, newPassword): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.updatePassword(email, password, newPassword).then(()=>{
+        this.updateEmail(email, newPassword, newEmail).then(()=>{
+          resolve("Email and Password updated successfully")
+        })
+      })
+    
+    })
+  }
+
+
+  private reauthenticateUser(email, password): Promise<any>{
+    const credentials = firebase.auth.EmailAuthProvider.credential(email, password)
+    return  this.fireAuthor.auth.currentUser.reauthenticateWithCredential(credentials)
   }
 
 
@@ -72,7 +121,7 @@ export class FirebaseProviderService {
   * @return Observable list retrieved from the node in firebase.
   */
   public getObservablesByMatch(nodeReference, orderByChildValue, value?): Observable<any> {
-    value = (value) ? value : this.firebaseAuthor.currentUser.uid
+    value = (value) ? value : this.fireAuthor.auth.currentUser.uid
     return this.firebaseDatabase.list(nodeReference, ref => ref.orderByChild(orderByChildValue).equalTo(value)).snapshotChanges();
   }
 

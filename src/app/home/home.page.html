@@ -13,8 +13,13 @@
     <ion-segment-button value="videos">
       <ion-label>Videos</ion-label>
     </ion-segment-button>
+
     <ion-segment-button value="logs">
       <ion-label>Logs</ion-label>
+    </ion-segment-button>
+
+    <ion-segment-button value="settings">
+      <ion-label>Settings</ion-label>
     </ion-segment-button>
   </ion-segment>
 
@@ -40,9 +45,47 @@
     </div>
   </div>
 
+  <div [ngSwitch]="homeSegment">
+    <div *ngSwitchCase="'settings'">
+      <div class="form">
+        <ion-item no-lines id="input-field">
+          <ion-label>Email: </ion-label>
+          <ion-input [(ngModel)]="email"></ion-input>
+        </ion-item>
+
+        <ion-item no-lines id="input-field">
+          <ion-label>Password: </ion-label>
+          <ion-input type="password" [(ngModel)]="password"></ion-input>
+        </ion-item>
+
+        <ion-item no-lines>
+          <ion-label>Update Email? </ion-label>
+          <ion-toggle [(ngModel)]="updateEmail"></ion-toggle>
+        </ion-item>
+
+        <ion-item no-lines>
+            <ion-label>Update Password? </ion-label>
+            <ion-toggle [(ngModel)]="updatePassword"></ion-toggle>
+          </ion-item>
+
+        <ion-item *ngIf="updateEmail" no-lines id="input-field">
+          <ion-label>New Email: </ion-label>
+          <ion-input [(ngModel)]="newEmail"></ion-input>
+        </ion-item>
+
+        <ion-item *ngIf="updatePassword" no-lines id="input-field">
+          <ion-label>New Password: </ion-label>
+          <ion-input type="password" [(ngModel)]="newPassword"></ion-input>
+        </ion-item>
+      </div>
+    </div>
+  </div>
 
 
-
+  <br>
+  <div class="login-action">
+      <ion-button expand="full" shape="round" (click)="updateLoginDetails()">Update Login Detail</ion-button>
+  </div>
 
 
 
