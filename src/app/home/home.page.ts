@@ -31,15 +31,14 @@ export class HomePage implements OnInit {
   ngOnInit() {
     this.getVideos()
     this.getLogs()
+    
     //console.log("Entered home page")
     // console.log(this.firebaseProvider.getVideos())
   }
 
   getVideos() {
     this.firebaseProvider.getVideos().then(data => {
-
       this.videosData = data
-
     });
   }
 

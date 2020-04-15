@@ -1,46 +1,47 @@
 import { Injectable } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { FCM } from '@ionic-native/fcm/ngx';
+import { FirebaseProviderService } from './firebase-provider.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class FcmService {
 
-  constructor() { 
+  constructor(private fcm: FCM, private firebaseProvider: FirebaseProviderService) {
 
   }
 
-  async getToken(){
-    let token
+  async getToken(): Promise<any> {
 
-    console.log("Method called to generate token")
+    return new Promise((resolve, reject) => {
+      this.fcm.getToken().then(token => {
+        this.saveDeviceTokenToFirebase(token).then(() => {
+          resolve()
+        }).catch(err=> {console.log(err), reject(err)})
+      }).catch(err => { console.log(err), alert(err), reject(err) })
 
-    // this.firebaseNative.getToken().then(token=>{
-    //   console.log("Token: " + token)
-    //   alert (token)
-    // }).catch(e => {alert(e), console.log(e)})
-
-    // if (this.platform.is('android')){
-      
-    //   token = await this.firebaseNative.getToken()
- 
-    // }
-
-    // if (this.platform.is('ios')){
-    //   token = await this.firebaseNative.getToken()
-    //   await this.firebaseNative.grantPermission()
-    // }
-
-    this.saveDeviceTokenToFirebase(token);
+    })
   }
 
 
-  private saveDeviceTokenToFirebase(token){
-    if (!token){return}
 
-    console.log(token)
-    alert (token);
+  private saveDeviceTokenToFirebase(token): Promise<any> {
+    return this.firebaseProvider.pushDeviceTokenToFirebase(token)
 
+  }
+
+  listenForNotification() {
+    // ionic push notification example
+    this.fcm.onNotification().subscribe(data => {
+      console.log(data);
+      if (data.wasTapped) {
+        console.log('Received in background');
+        alert(data["body"])
+      } else {
+        console.log('Received in foreground');
+        alert(data["body"])
+      }
+    });
   }
 
 

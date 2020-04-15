@@ -24,6 +24,8 @@ import { StreamingMedia } from '@ionic-native/streaming-media/ngx';
 // import { AngularFireAuth } from '@angular/fire/auth';
 // import { AngularFireModule } from '@angular/fire';;
 
+//FCM
+import { FCM } from '@ionic-native/fcm/ngx';
 
 
 const FIRE_CONFIG = {
@@ -50,6 +52,7 @@ const FIRE_CONFIG = {
   providers: [
     StatusBar,
     SplashScreen,
+    FCM,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     AngularFireAuthModule,
     AngularFireAuth,
