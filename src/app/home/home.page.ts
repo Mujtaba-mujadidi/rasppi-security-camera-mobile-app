@@ -2,6 +2,8 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { FirebaseProviderService } from '../firebase-provider.service';
 import { Observable } from 'rxjs';
 import { AlertController } from '@ionic/angular';
+import { Router } from '@angular/router';
+
 
 
 
@@ -24,7 +26,7 @@ export class HomePage implements OnInit {
   private newPassword = ""
   private updatePassword = false
 
-  constructor(public firebaseProvider: FirebaseProviderService, private alertController: AlertController) {
+  constructor(private router: Router, public firebaseProvider: FirebaseProviderService, private alertController: AlertController) {
   }
 
 
@@ -47,6 +49,14 @@ export class HomePage implements OnInit {
     this.firebaseProvider.getObservableList().forEach(e => {
       console.log(e)
     })
+  }
+
+  private logout(){
+    this.firebaseProvider.logout().then(()=>{
+      alert("Logout successful")
+      this.router.navigateByUrl('login')
+    }).catch(err => alert(err))
+    
   }
 
   private updateLoginDetails() {
