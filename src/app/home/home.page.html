@@ -40,10 +40,35 @@
 
     <div *ngSwitchCase="'logs'">
       <ion-list *ngFor="let log of ListOfLogs | async">
-        <pre>{{ log.incedentDateAndtime }}</pre>
+
+        <ion-card id="card">
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <strong>Incident Date And Time</strong>
+              </ion-col>
+              <ion-col>
+                <strong>List Of Object Detected</strong>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                {{ log.incedentDateAndtime }}
+              </ion-col>
+              <ion-col>
+                {{ log.detectedObjects }}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+
       </ion-list>
     </div>
   </div>
+
+
+
 
   <div [ngSwitch]="homeSegment">
     <div *ngSwitchCase="'settings'">
@@ -64,9 +89,9 @@
         </ion-item>
 
         <ion-item no-lines>
-            <ion-label>Update Password? </ion-label>
-            <ion-toggle [(ngModel)]="updatePassword"></ion-toggle>
-          </ion-item>
+          <ion-label>Update Password? </ion-label>
+          <ion-toggle [(ngModel)]="updatePassword"></ion-toggle>
+        </ion-item>
 
         <ion-item *ngIf="updateEmail" no-lines id="input-field">
           <ion-label>New Email: </ion-label>
@@ -81,7 +106,7 @@
 
       <br>
       <div class="login-action">
-          <ion-button expand="full" shape="round" (click)="updateLoginDetails()">Update Login Detail</ion-button>
+        <ion-button expand="full" shape="round" (click)="updateLoginDetails()">Update Login Detail</ion-button>
       </div>
 
     </div>

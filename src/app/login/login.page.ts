@@ -14,7 +14,7 @@ import { FcmService } from '../fcm.service';
 export class LoginPage implements OnInit {
 
   private items: Observable<any[]>;
-  private email = "r@g.com"
+  private email = "raspi.prj@gmail.com"
   private password = "123456"
 
   profileUrl: Observable<string | null>;
