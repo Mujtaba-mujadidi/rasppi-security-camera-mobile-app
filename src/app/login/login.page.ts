@@ -3,6 +3,7 @@ import { FirebaseProviderService } from '../firebase-provider.service';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { FcmService } from '../fcm.service';
 
 
 @Component({
@@ -13,20 +14,22 @@ import { AlertController } from '@ionic/angular';
 export class LoginPage implements OnInit {
 
   private items: Observable<any[]>;
-  private email = "r@g.com"
+  private email = "raspi.prj@gmail.com"
   private password = "123456"
 
   profileUrl: Observable<string | null>;
 
-  constructor(private router: Router, private alertController: AlertController, private firebaseProvider: FirebaseProviderService) { }
+  constructor(private router: Router, private alertController: AlertController, private firebaseProvider: FirebaseProviderService, private fcmService: FcmService) { }
 
   ngOnInit() {
+    this.fcmService.listenForNotification()
   }
 
   login() {
     this.firebaseProvider.login(this.email, this.password).then(() => {
-      //Navigate to home page
       console.log("Login success")
+      this.fcmService.getToken()
+      //Navigate to home page
       this.router.navigateByUrl('home')
     }).catch(err => alert(err.message))
   }

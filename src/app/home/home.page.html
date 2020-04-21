@@ -1,8 +1,13 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>
-      Videos
+      Home Page
     </ion-title>
+    <ion-buttons slot="primary" >
+      <ion-button color="danger" (click)="logout()">
+        <ion-icon slot="icon-only" name="log-out"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -40,10 +45,35 @@
 
     <div *ngSwitchCase="'logs'">
       <ion-list *ngFor="let log of ListOfLogs | async">
-        <pre>{{ log.incedentDateAndtime }}</pre>
+
+        <ion-card id="card">
+          <ion-grid>
+            <ion-row>
+              <ion-col>
+                <strong>Incident Date And Time</strong>
+              </ion-col>
+              <ion-col>
+                <strong>List Of Object Detected</strong>
+              </ion-col>
+            </ion-row>
+
+            <ion-row>
+              <ion-col>
+                {{ log.incedentDateAndtime }}
+              </ion-col>
+              <ion-col>
+                {{ log.detectedObjects }}
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-card>
+
       </ion-list>
     </div>
   </div>
+
+
+
 
   <div [ngSwitch]="homeSegment">
     <div *ngSwitchCase="'settings'">
@@ -64,9 +94,9 @@
         </ion-item>
 
         <ion-item no-lines>
-            <ion-label>Update Password? </ion-label>
-            <ion-toggle [(ngModel)]="updatePassword"></ion-toggle>
-          </ion-item>
+          <ion-label>Update Password? </ion-label>
+          <ion-toggle [(ngModel)]="updatePassword"></ion-toggle>
+        </ion-item>
 
         <ion-item *ngIf="updateEmail" no-lines id="input-field">
           <ion-label>New Email: </ion-label>
@@ -78,21 +108,13 @@
           <ion-input type="password" [(ngModel)]="newPassword"></ion-input>
         </ion-item>
       </div>
+
+      <br>
+      <div class="login-action">
+        <ion-button expand="full" shape="round" (click)="updateLoginDetails()">Update Login Detail</ion-button>
+      </div>
+
     </div>
   </div>
-
-
-  <br>
-  <div class="login-action">
-      <ion-button expand="full" shape="round" (click)="updateLoginDetails()">Update Login Detail</ion-button>
-  </div>
-
-
-
-
-
-
-
-
 
 </ion-content>

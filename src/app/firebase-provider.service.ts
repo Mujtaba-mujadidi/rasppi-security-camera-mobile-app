@@ -25,6 +25,11 @@ export class FirebaseProviderService {
   }
 
 
+  //
+  pushDeviceTokenToFirebase(token):Promise<any>{
+    return this.firebaseDatabase.database.ref("devices").child(this.fireAuthor.auth.currentUser.uid).set({"token": token})
+  }
+
   async getVideos() {
     let cloudFiles = []
     const nodeRef = this.fireAuthor.auth.currentUser.uid
@@ -129,7 +134,7 @@ export class FirebaseProviderService {
    * 
    */
   public getObservableList() {
-    const nodeRef = this.fireAuthor.auth.currentUser.uid
+    const nodeRef = "logs/" + this.fireAuthor.auth.currentUser.uid
     return this.firebaseDatabase.list(nodeRef + "").valueChanges();
   }
 
