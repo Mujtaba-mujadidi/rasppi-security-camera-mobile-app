@@ -13,27 +13,32 @@ import { FcmService } from '../fcm.service';
 })
 export class LoginPage implements OnInit {
 
-  private items: Observable<any[]>;
   private email = "raspi.prj@gmail.com"
   private password = "123456"
-
-  profileUrl: Observable<string | null>;
 
   constructor(private router: Router, private alertController: AlertController, private firebaseProvider: FirebaseProviderService, private fcmService: FcmService) { }
 
   ngOnInit() {
+    //To Listen for push notification
     this.fcmService.listenForNotification()
   }
 
-  login() {
+  /**
+   *@description To login to Firebase with provided email and password.
+   */
+  private login() {
     this.firebaseProvider.login(this.email, this.password).then(() => {
       console.log("Login success")
+      //Generate the device token on successful login.
       this.fcmService.getToken()
       //Navigate to home page
       this.router.navigateByUrl('home')
     }).catch(err => alert(err.message))
   }
 
+  /**
+   *@description To reset the account password.
+   */
   async resetPassword() {
     console.log("Reset password method called")
     this.firebaseProvider.resetPassword(this.email).then(() => {
@@ -77,9 +82,5 @@ export class LoginPage implements OnInit {
 
     })
 
-  }
-
-  test(){
-    this.firebaseProvider.getVideos()
   }
 }

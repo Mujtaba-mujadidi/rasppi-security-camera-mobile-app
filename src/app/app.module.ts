@@ -9,20 +9,12 @@ import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
+
 // Firebase module imports
 import { AngularFireModule } from 'angularfire2';
-import { AngularFireAuthModule } from 'angularfire2/auth'
-import {AngularFireDatabase, AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuth } from 'angularfire2/auth';
-import { AngularFireStorageModule } from '@angular/fire/storage';
-import { StreamingMedia } from '@ionic-native/streaming-media/ngx';
+import { AngularFireDatabase } from 'angularfire2/database';
 
-
-
-
-// import { AngularFireDatabaseModule } from "@angular/fire/database";
-// import { AngularFireAuth } from '@angular/fire/auth';
-// import { AngularFireModule } from '@angular/fire';;
 
 //FCM
 import { FCM } from '@ionic-native/fcm/ngx';
@@ -46,17 +38,14 @@ const FIRE_CONFIG = {
     IonicModule.forRoot(), 
     AppRoutingModule,
     AngularFireModule.initializeApp(FIRE_CONFIG),
-    AngularFireDatabaseModule,
-    AngularFireStorageModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
     FCM,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    AngularFireAuthModule,
     AngularFireAuth,
-    StreamingMedia
+    AngularFireDatabase
 
   ],
   bootstrap: [AppComponent]
