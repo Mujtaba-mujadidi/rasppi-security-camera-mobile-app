@@ -16,41 +16,50 @@ export class HomePage implements OnInit {
 
   private homeSegment = "videos"
 
-  private videosData = []
+  //list videos url from the Firebase Storage
+  private videosData = [] 
+  //list logs from the Firebase Real Time Database
   private ListOfLogs: Observable<any | null>;
 
+  //Email and password used to login.
   private email = ""
   private password = ""
+  //To indicate if email or password update is requested.
   private updateEmail = false
+  private updatePassword = false
+  //New email and password
   private newEmail = ""
   private newPassword = ""
-  private updatePassword = false
+  
 
-  constructor(private router: Router, public firebaseProvider: FirebaseProviderService, private alertController: AlertController) {
-  }
-
+  constructor(private router: Router,
+     public firebaseProvider: FirebaseProviderService, 
+     private alertController: AlertController) {}
 
   ngOnInit() {
     this.getVideos()
     this.getLogs()
-    
-    //console.log("Entered home page")
-    // console.log(this.firebaseProvider.getVideos())
   }
 
-  getVideos() {
+  /**
+   * @description To retrieve list of video urls from Firebase Storage
+   */
+  private getVideos() {
     this.firebaseProvider.getVideos().then(data => {
       this.videosData = data
     });
   }
 
+  /**
+   * @description To retrieve list of logs from Firebase Realtime Database.
+   */
   private getLogs() {
     this.ListOfLogs = this.firebaseProvider.getObservableList()
-    this.firebaseProvider.getObservableList().forEach(e => {
-      console.log(e)
-    })
   }
 
+  /**
+   * @description To logout from Firebase and navigate back to the login page.
+   */
   private logout(){
     this.firebaseProvider.logout().then(()=>{
       alert("Logout successful")
@@ -59,6 +68,9 @@ export class HomePage implements OnInit {
     
   }
 
+  /**
+   * @description Based on user selection, updates email, password, or both.
+   */
   private updateLoginDetails() {
     if(this.updateEmail && this.updatePassword){
       this.firebaseProvider.updateEmailAndPassword(this.email, this.password, this.newEmail, this.newPassword).then((res)=>{

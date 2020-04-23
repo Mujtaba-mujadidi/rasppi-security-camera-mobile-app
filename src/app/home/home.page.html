@@ -12,8 +12,6 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-
-  <!-- Default Segment -->
   <ion-segment [(ngModel)]="homeSegment">
     <ion-segment-button value="videos">
       <ion-label>Videos</ion-label>
@@ -37,7 +35,7 @@
           </ion-item-divider>
           <br>
           <ion-item>
-            <video class="vp" controls [src]="data['url']"> </video>
+            <video class="videoFrame" controls [src]="data['url']"> </video>
           </ion-item>
         </ion-item-group>
       </ion-list>
@@ -71,9 +69,6 @@
       </ion-list>
     </div>
   </div>
-
-
-
 
   <div [ngSwitch]="homeSegment">
     <div *ngSwitchCase="'settings'">
